@@ -3,7 +3,7 @@ spring:
     name: api-navidam
 
   datasource:
-    url: jdbc:h2:mem:navidam;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    url: jdbc:h2:file:./data/navidam;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -30,4 +30,4 @@ server:
 
 navidam:
   n8n:
-    webhook-url: "http://n8n:5678/webhook/navidam-send"
+    webhook-url: "http://localhost:5678/webhook-test/navidam-send"
