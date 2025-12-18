@@ -31,9 +31,9 @@ public class NainMelodia {
                 .nota(Nota.MI, Figura.NEGRA)
                 .nota(Nota.DO, Figura.NEGRA)
                 .nota(Nota.SOL, Figura.NEGRA)
-                .nota(Nota.DO, Figura.REDONDA);
+                .nota(Nota.DO, Figura.REDONDA)
 
-            PistaPIANO_ACUSTICO.escuchar();
+            .escuchar();
 			} catch (Exception e) {
                        e.printStackTrace();
         }
