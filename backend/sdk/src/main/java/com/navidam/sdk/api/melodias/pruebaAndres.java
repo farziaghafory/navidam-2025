@@ -9,7 +9,7 @@ public class pruebaAndres {
 
 	public static void main(String[] args) {
 		try {
-			new Melodia("Melodia prueba andres").instrumento(Instrumento.BAJO_FRETLESS)
+			new Melodia("Melodia prueba andres").instrumento(Instrumento.ARMONICA)
 
             
             .nota(Nota.MI, Figura.NEGRA)
