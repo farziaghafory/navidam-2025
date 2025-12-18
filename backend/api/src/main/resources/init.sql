@@ -12,3 +12,4 @@ CREATE TABLE personas
     nombre   VARCHAR(100) NOT NULL,
     email    VARCHAR(255) NOT NULL
 );
+
