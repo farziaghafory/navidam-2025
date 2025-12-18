@@ -1,4 +1,4 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function PageNotFound() {
     return (
@@ -10,7 +10,7 @@ export default function PageNotFound() {
             </p>
 
             <Link
-                to="/"
+                to="/Index"
                 className="mt-6 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
             >
                 Volver al inicio
