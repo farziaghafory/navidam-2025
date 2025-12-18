@@ -6,15 +6,19 @@ import com.navidam.sdk.internal.melodia.Melodia;
 import com.navidam.sdk.internal.melodia.Nota;
 
 public class Prueba {
-
-	public static void main(String[] args) {
-		try {
-			new Melodia("CAncion de prueba").instrumento(Instrumento.BAJO_FRETLESS)
-				.nota(Nota.FA, Figura.NEGRA)
-				.nota(Nota.LA, Figura.BLANCA).escuchar();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+    public static void main(String[] args) {
+        try {
+            new Melodia("Demo Melody")
+                .instrumento(Instrumento.PIANO_ACUSTICO)
+                .nota(Nota.DO, Figura.NEGRA)
+                .nota(Nota.MI, Figura.CORCHEA)
+                .nota(Nota.SOL, Figura.CORCHEA)
+                .nota(Nota.FA, Figura.NEGRA)
+                .nota(Nota.RE, Figura.BLANCA)
+                .escuchar();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+
