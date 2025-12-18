@@ -1,37 +1,497 @@
-<div class="card">
-    <div class="hero">
-        <div class="sparkles"></div>
-        <span class="badge">🎄 Felicitación Navideña · NaviDAM</span>
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎆 Feliz Año Nuevo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* PALETA DE COLORES AÑO NUEVO - ELEGANTE */
+        :root {
+            --midnight-blue: #0c1b33;
+            --deep-purple: #2a1b3d;
+            --gold: #d4af37;
+            --silver: #c0c0c0;
+            --sparkle: #e6e6fa;
+            --light-blue: #4a90e2;
+            --white: #ffffff;
+            --dark-text: #1a1a2e;
+        }
 
-        <h1 class="title" th:text="'¡Felices fiestas, ' + ${m.destinatario} + '!'">
-            ¡Felices fiestas!
-        </h1>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-        <p class="subtitle">Te han enviado un mensaje especial con música 🎶</p>
-    </div>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, var(--midnight-blue) 0%, var(--deep-purple) 100%);
+            color: var(--white);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-    <div class="content">
-        <div class="message" th:text="${m.mensaje}">
-            Mensaje aquí
-        </div>
+        /* NIEVE SUAVE */
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
 
-        <div class="grid">
-            <div class="panel">
-                <p class="k">De</p>
-                <p class="v" th:text="${m.remitente}">Remitente</p>
-                <p class="small" th:text="'Enviado el ' + ${m.fecha}">Enviado el ...</p>
+        .snowflake {
+            position: absolute;
+            background: var(--sparkle);
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: snowFall linear infinite;
+        }
+
+        @keyframes snowFall {
+            0% {
+                transform: translateY(-10px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) translateX(20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* CONTENEDOR PRINCIPAL */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* TARJETA ELEGANTE */
+        .greeting-card {
+            background: linear-gradient(145deg, 
+                rgba(255, 255, 255, 0.05), 
+                rgba(255, 255, 255, 0.02));
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            padding: 60px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* EFECTO DE BRILLO */
+        .greeting-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                var(--gold), 
+                transparent);
+        }
+
+        /* ENCABEZADO */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .year-badge {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .year-badge::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--white);
+            margin: 20px 0;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        .accent {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--silver);
+            font-weight: 300;
+            margin-top: 15px;
+            letter-spacing: 1px;
+        }
+
+        /* CONTENIDO EN COLUMNAS */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* MENSAJE */
+        .message-container {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border-left: 4px solid var(--light-blue);
+        }
+
+        .message-label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            color: var(--light-blue);
+            font-weight: 600;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .message-content {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            white-space: pre-wrap;
+            min-height: 200px;
+        }
+
+        /* INFO PANEL */
+        .info-panel {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            border-right: 4px solid var(--gold);
+        }
+
+        .info-item {
+            margin-bottom: 30px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 0.9rem;
+            color: var(--silver);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1.4rem;
+            color: var(--white);
+            font-weight: 500;
+        }
+
+        /* SECCIÓN MUSICAL */
+        .music-section {
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, 
+                rgba(74, 144, 226, 0.1), 
+                rgba(212, 175, 55, 0.1));
+            border-radius: 20px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-section::before {
+            content: '🎵';
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.05;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .music-title {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .track-name {
+            display: inline-block;
+            font-size: 1.6rem;
+            color: var(--white);
+            padding: 15px 30px;
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* DECORACIONES AÑO NUEVO */
+        .new-year-decoration {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.3;
+            z-index: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* PIE DE PÁGINA */
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .signature {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .generated-by {
+            color: var(--silver);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .firework {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: var(--gold);
+            animation: firework 1.5s infinite;
+            opacity: 0;
+        }
+
+        @keyframes firework {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+                box-shadow: 
+                    0 0 10px var(--gold),
+                    0 0 20px var(--gold),
+                    0 0 30px var(--gold);
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty));
+                opacity: 0;
+                box-shadow: 
+                    0 0 20px var(--gold),
+                    0 0 40px var(--gold),
+                    0 0 60px var(--gold);
+            }
+        }
+    </style>
+</head>
+<body>
+  
+    <div class="snow" id="snow"></div>
+    
+    <!-- FUEGOS ARTIFICIALES -->
+    <div class="firework" style="--tx: 100px; --ty: -100px; top: 20%; left: 15%;"></div>
+    <div class="firework" style="--tx: -80px; --ty: -120px; top: 30%; right: 20%;"></div>
+    <div class="firework" style="--tx: 120px; --ty: -80px; bottom: 25%; left: 25%;"></div>
+    
+    <!-- DECORACIONES -->
+    <div class="new-year-decoration" style="top: 10%; left: 5%;">🎆</div>
+    <div class="new-year-decoration" style="top: 15%; right: 10%;">✨</div>
+    <div class="new-year-decoration" style="bottom: 20%; left: 15%;">🥂</div>
+    <div class="new-year-decoration" style="bottom: 25%; right: 5%;">⭐</div>
+    
+    <div class="container">
+        <div class="greeting-card">
+            <div class="header">
+                <div class="year-badge">Nueva Aventura Comienza</div>
+                <h1 class="main-title">
+                    Feliz <span class="accent" th:text="${m.destinatario}">[Nombre]</span>
+                </h1>
+                <p class="subtitle">Que este nuevo año esté lleno de logros y momentos memorables</p>
             </div>
-
-            <div class="panel">
-                <div class="melody">
-                    <div class="note">🎵</div>
-                    <div>
-                        <p class="k">Melodía</p>
-                        <p class="v" th:text="${m.melodia}">DO RE MI...</p>
-                        <p class="small">Si tienes el archivo MIDI, ¡dale al play en tu reproductor!</p>
+            
+            <div class="content-grid">
+                <div class="message-container">
+                    <div class="message-label">
+                        <span>✉️</span>
+                        <span>Mensaje de Año Nuevo</span>
                     </div>
+                    <div class="message-content" th:text="${m.mensaje}">
+                        Tu mensaje especial para el nuevo año aparecerá aquí...
+                    </div>
+                </div>
+                
+                <div class="info-panel">
+                    <div class="info-item">
+                        <div class="info-label">De</div>
+                        <div class="info-value" th:text="${m.remitente}">[Remitente]</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Fecha</div>
+                        <div class="info-value" th:text="${m.fecha}">[Fecha]</div>
+                    </div>
+                    
+                    <div class="info-item">
+                        <div class="info-label">Año Nuevo</div>
+                        <div class="info-value">2025</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="music-section">
+                <h2 class="music-title">🎶 Melodía para Celebrar</h2>
+                <div class="track-name" th:text="${m.melodia}">[Nombre de la Melodía]</div>
+                <p style="color: rgba(255, 255, 255, 0.7); margin-top: 20px; position: relative; z-index: 1;">
+                    Una canción especial para acompañar tus celebraciones de fin de año
+                </p>
+            </div>
+            
+            <div class="footer">
+                <div class="signature" th:text="'Con los mejores deseos, ' + ${m.remitente}">
+                    Con los mejores deseos
+                </div>
+                <div class="generated-by">
+                    🎄 Creado con NaviDAM · Que todos tus sueños se hagan realidad 🎄
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+    <script>
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snow');
+            const snowflakeCount = 70;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                const size = Math.random() * 7 + 3;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+               
+                snowflake.style.left = `${Math.random() * 100}vw`;
+                
+         
+                const duration = Math.random() * 5 + 5;
+                const delay = Math.random() * 5;
+                snowflake.style.animationDuration = `${duration}s`;
+                snowflake.style.animationDelay = `${delay}s`;
+                
+              
+                snowflake.style.opacity = Math.random() * 0.6 + 0.3;
+                
+                snowContainer.appendChild(snowflake);
+            }
+        }
+        
+       
+        function updateYearCountdown() {
+            const now = new Date();
+            const newYear = new Date(now.getFullYear() + 1, 0, 1);
+            const diff = newYear - now;
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            
+            const countdownElement = document.createElement('div');
+            countdownElement.style.cssText = `
+                text-align: center;
+                color: var(--gold);
+                font-size: 1.1rem;
+                margin-top: 20px;
+                letter-spacing: 1px;
+            `;
+            countdownElement.textContent = `${days} días y ${hours} horas para el Año Nuevo`;
+            
+            const existingCountdown = document.querySelector('.countdown');
+            if (existingCountdown) {
+                existingCountdown.remove();
+            }
+            countdownElement.className = 'countdown';
+            document.querySelector('.header').appendChild(countdownElement);
+        }
+        
+       
+        window.addEventListener('load', () => {
+            createSnowflakes();
+            updateYearCountdown();
+            
+            
+            setInterval(updateYearCountdown, 60000);
+       
+            const card = document.querySelector('.greeting-card');
+            card.style.transform = 'translateY(20px)';
+            card.style.opacity = '0';
+            
+            setTimeout(() => {
+                card.style.transition = 'transform 1s ease, opacity 1s ease';
+                card.style.transform = 'translateY(0)';
+                card.style.opacity = '1';
+            }, 300);
+        });
+    </script>
+</body>
+</html>

@@ -5,10 +5,11 @@ import com.navidam.sdk.internal.melodia.Instrumento;
 import com.navidam.sdk.internal.melodia.Melodia;
 import com.navidam.sdk.internal.melodia.Nota;
 
-public class Prueba {
-    public static void main(String[] args) {
-        try {
-            new Melodia("Demo Melody")
+public class Prueba{
+	 public static Melodia crear() {
+	        return new Melodia("Melodia de Nain")
+	            .instrumento(Instrumento.PIANO_ACUSTICO)
+            .tempo(120)
             .nota(Nota.LA, Figura.NEGRA)
             .nota(Nota.RE, Figura.CORCHEA)
             .nota(Nota.MI, Figura.CORCHEA)
@@ -26,12 +27,6 @@ public class Prueba {
             .nota(Nota.LA, Figura.NEGRA)
             .nota(Nota.SOL, Figura.NEGRA)
             .nota(Nota.FA, Figura.NEGRA)
-            .nota(Nota.MI, Figura.NEGRA)
-            .escuchar();
-                
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            .nota(Nota.MI, Figura.NEGRA);
     }
 }
-
